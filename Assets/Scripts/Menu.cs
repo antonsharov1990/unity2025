@@ -73,7 +73,7 @@ public class Menu : MonoBehaviour
             //Text tx = tr.GetComponent<Text>();
             //tx.text = "1";//f.Name;
             TextMeshProUGUI tx = tr.GetComponent<TextMeshProUGUI>();
-            tx.text = "1";//f.Name;
+            tx.text = f.Name;
             
             //for Example for move text from unity button to new button - it is work!
             // UnityEngine.Transform button = SavedFilesScrollViewContent.GetChild(0);
