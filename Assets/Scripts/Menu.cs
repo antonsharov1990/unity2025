@@ -233,7 +233,6 @@ public class Menu : MonoBehaviour
             glg.cellSize = new Vector2(cellWidth, cellHeight);
             int widthSV = (int)Math.Ceiling(SavedFilesScrollViewContent.parent.parent.GetComponent<RectTransform>().sizeDelta.x);
             RectTransform rt = SavedFilesScrollViewContent.GetComponent<RectTransform>();
-            Debug.Log($"paddingWidth={paddingWidth}");
             rt.sizeDelta =
                 new Vector2(cellWidth - widthSV + paddingWidth * 5, (paddingHeight + SavedFilesScrollViewContent.transform.childCount * cellHeight + cellHeight / 2));
         }
