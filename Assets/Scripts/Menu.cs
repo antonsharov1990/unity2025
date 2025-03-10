@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 
 
 public class Menu : MonoBehaviour
@@ -107,9 +105,11 @@ public class Menu : MonoBehaviour
 
         try
         {
-            if (System.IO.File.Exists(saveFileName))
+            string path = System.IO.Path.Combine(Application.persistentDataPath, "save");
+            string fileWithPath = System.IO.Path.Combine(path, saveFileName);
+            if (System.IO.File.Exists(fileWithPath))
             {
-                System.IO.FileStream stream = System.IO.File.Open(saveFileName, System.IO.FileMode.Open);
+                System.IO.FileStream stream = System.IO.File.Open(fileWithPath, System.IO.FileMode.Open);
                 gamestate = formatter.Deserialize(stream) as Dictionary<string, object>;
                 stream.Close();
 
@@ -160,10 +160,16 @@ public class Menu : MonoBehaviour
         // gamestate.Add("roll", Current.CharacterModel.GetRoll());
         // gamestate.Add("yaw", Current.CharacterModel.GetYaw());
 
-        string filename = System.IO.Path.Combine(Application.persistentDataPath, saveFileName);
+        string path = System.IO.Path.Combine(Application.persistentDataPath, "save");
+        if (!System.IO.Directory.Exists(path))
+        {
+            System.IO.Directory.CreateDirectory(path);
+        }
+
+        string fileWithPath = System.IO.Path.Combine(path, saveFileName);
         System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter =
             new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-        System.IO.FileStream stream = System.IO.File.Create(filename);
+        System.IO.FileStream stream = System.IO.File.Create(fileWithPath);
         formatter.Serialize(stream, gamestate);
         stream.Close();
     }
@@ -171,8 +177,9 @@ public class Menu : MonoBehaviour
     private void DeleteGame(string saveFileName)
     {
         Debug.Log($"Delete {saveFileName}");
-        string filename = System.IO.Path.Combine(Application.persistentDataPath, saveFileName);
-        System.IO.File.Delete(filename);
+        string path = System.IO.Path.Combine(Application.persistentDataPath, "save");
+        string fileWithPath = System.IO.Path.Combine(path, saveFileName);
+        System.IO.File.Delete(fileWithPath);
     }
 
     public void OnValueChangedFile()
@@ -226,7 +233,12 @@ public class Menu : MonoBehaviour
         {
             ClearChildren(SavedFilesScrollViewContent);
 
-            string path = Application.persistentDataPath;
+            string path = System.IO.Path.Combine(Application.persistentDataPath, "save");
+            if (!System.IO.Directory.Exists(path))
+            {
+                System.IO.Directory.CreateDirectory(path);
+            }
+
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(path);
             System.IO.FileInfo[] info = dir.GetFiles("*.save");
             int maxCharacterCount = 0;
@@ -263,7 +275,7 @@ public class Menu : MonoBehaviour
             int cellHeight = (int)Math.Ceiling(glg.cellSize.y);
             int fontSize = (int)Math.Ceiling(buttonPrefub.transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontSize);
             int cellWidth = maxCharacterCount * (fontSize / 5 * 3);
-            glg.cellSize = new Vector2(cellWidth, cellHeight);
+            glg.cellSize = new Vector2(cellWidth + paddingWidth * 2, cellHeight);
             int widthSV = (int)Math.Ceiling(SavedFilesScrollViewContent.parent.parent.GetComponent<RectTransform>().sizeDelta.x);
             RectTransform rt = SavedFilesScrollViewContent.GetComponent<RectTransform>();
             rt.sizeDelta =
