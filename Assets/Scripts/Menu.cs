@@ -21,6 +21,8 @@ public class Menu : MonoBehaviour
 
     public Transform SavedFilesScrollViewContent;
 
+    public GameObject SaveNameInputField;
+
     public GameObject buttonPrefub;
 
     private void Awake()
@@ -150,15 +152,14 @@ public class Menu : MonoBehaviour
     private void SaveGame(string saveFileName)
     {
         Dictionary<string, object> gamestate = new Dictionary<string, object>();
-        gamestate.Add("scene", Current.CharacterModel.GetScene());
-        gamestate.Add("x", Current.CharacterModel.GetX());
-        gamestate.Add("y", Current.CharacterModel.GetY());
-        gamestate.Add("z", Current.CharacterModel.GetZ());
-        gamestate.Add("pitch", Current.CharacterModel.GetPitch());
-        gamestate.Add("roll", Current.CharacterModel.GetRoll());
-        gamestate.Add("yaw", Current.CharacterModel.GetYaw());
+        // gamestate.Add("scene", Current.CharacterModel.GetScene());
+        // gamestate.Add("x", Current.CharacterModel.GetX());
+        // gamestate.Add("y", Current.CharacterModel.GetY());
+        // gamestate.Add("z", Current.CharacterModel.GetZ());
+        // gamestate.Add("pitch", Current.CharacterModel.GetPitch());
+        // gamestate.Add("roll", Current.CharacterModel.GetRoll());
+        // gamestate.Add("yaw", Current.CharacterModel.GetYaw());
 
-        saveFileName += ".save";
         string filename = System.IO.Path.Combine(Application.persistentDataPath, saveFileName);
         System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter =
             new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
@@ -291,5 +292,21 @@ public class Menu : MonoBehaviour
 
         DeleteGame(_saveFileName);
         InitializeListOfSaves();
+    }
+
+    public void OnClickSave()
+    {
+        if (SaveNameInputField != null)
+        {
+            _saveFileName = SaveNameInputField.transform.GetComponent<TMP_InputField>().text;
+        }
+
+        if(string.IsNullOrWhiteSpace(_saveFileName))
+        {
+            _saveFileName = $"{DateTime.UtcNow.ToString("yyyy-MM-ddThh-mm-ss")}";
+        }
+        _saveFileName += ".save";
+        
+        SaveGame(_saveFileName);
     }
 }
