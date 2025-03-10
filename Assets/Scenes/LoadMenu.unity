@@ -179,8 +179,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 1
-  m_CellSize: {x: 3000, y: 45}
-  m_Spacing: {x: 10000, y: 0}
+  m_CellSize: {x: 30, y: 45}
+  m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 1
 --- !u!1 &10303898
@@ -1536,8 +1536,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1868793540}
   m_HandleRect: {fileID: 1868793539}
   m_Direction: 0
-  m_Value: -0.0000001950969
-  m_Size: 0.8304219
+  m_Value: -0.00000019509667
+  m_Size: 0.83042175
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1795,7 +1795,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 2976629}
-  m_Horizontal: 0
+  m_Horizontal: 1
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1

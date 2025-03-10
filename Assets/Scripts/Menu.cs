@@ -27,115 +27,8 @@ public class Menu : MonoBehaviour
     {
         returnSceneName = "MainMenu";
         _saveFileName = "";
-        //VolumeSlider = null;
 
-        string saveFileName = "test1";
-        saveFileName += ".save";
-        string filename = System.IO.Path.Combine(Application.persistentDataPath, saveFileName);
-        System.IO.File.Create(filename);
-
-        saveFileName = "test2";
-        saveFileName += ".save";
-        filename = System.IO.Path.Combine(Application.persistentDataPath, saveFileName);
-        System.IO.File.Create(filename);
-
-        saveFileName = "testVeryLongString_TestVeryLongString_TestVeryLongString_TestVeryLongString";
-        saveFileName += ".save";
-        filename = System.IO.Path.Combine(Application.persistentDataPath, saveFileName);
-        System.IO.File.Create(filename);
-
-        string path = Application.persistentDataPath;
-        System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(path);
-        System.IO.FileInfo[] info = dir.GetFiles("*.save");
-        int maxCharacterCount = 0;
-
-        for (int i = 0; i < 10; i++)
-        {
-            foreach (System.IO.FileInfo f in info)
-            {
-                if(maxCharacterCount < f.Name.Length)
-                {
-                    maxCharacterCount = f.Name.Length;
-                }
-
-                //GameObject buttonGO = new GameObject();
-                GameObject buttonGO = Instantiate(buttonPrefub, transform.position, Quaternion.identity);
-                buttonGO.name = "Button";
-                buttonGO.transform.parent = SavedFilesScrollViewContent;
-
-                // buttonGO.layer = 5;
-                // buttonGO.AddComponent<Button>();
-                // buttonGO.AddComponent<RectTransform>();
-                // buttonGO.AddComponent<CanvasRenderer>();
-                // buttonGO.AddComponent<Image>();
-
-                RectTransform buttonRT = buttonGO.GetComponent<RectTransform>();
-                buttonRT.anchoredPosition = new Vector2(0.5f, 0.5f);
-                buttonRT.anchorMin = new Vector2(0f, 1f);
-                buttonRT.anchorMax = new Vector2(1f, 1f);
-                buttonRT.position = new Vector3(0f, 0f, 0f);
-                buttonRT.localPosition = new Vector3(0f, -150f, 0f);
-
-                //TextMeshPro textMeshPro =  buttonGO.GetComponent<Button>().transform.GetChild(0).GetComponent<TextMeshPro>();
-                //Debug.Log(textMeshPro.text);
-                //textMeshPro.text = "1";//f.Name;
-
-                Debug.Log(buttonGO.transform.childCount);
-                Transform tr = buttonGO.transform.GetChild(0);
-                //TextMeshPro textMeshPro =  tr.GetComponent<TextMeshPro>();
-                //textMeshPro.text = "1";//f.Name;
-                //Text tx = tr.GetComponent<Text>();
-                //tx.text = "1";//f.Name;
-                TextMeshProUGUI tx = tr.GetComponent<TextMeshProUGUI>();
-                tx.text = f.Name;
-
-                //for Example for move text from unity button to new button - it is work!
-                // UnityEngine.Transform button = SavedFilesScrollViewContent.GetChild(0);
-                // UnityEngine.Transform textMeshPro =  button.GetChild(0);
-                // textMeshPro.transform.parent = buttonGO.transform;
-
-                // GameObject textGO = new GameObject();
-                // textGO.name = "Text (TMP)";
-                // textGO.transform.parent = buttonGO.transform;
-                // textGO.layer = 5;
-                // textGO.AddComponent<RectTransform>();
-                // textGO.AddComponent<CanvasRenderer>();
-                // textGO.AddComponent<TextMeshPro>();
-                // RectTransform textRT = textGO.GetComponent<RectTransform>();
-                // textRT.anchoredPosition = new Vector2(0.5f, 0.5f);
-                // textRT.anchorMin = new Vector2(0f, 0f);
-                // textRT.anchorMax = new Vector2(1f, 1f);
-
-                // textRT.position = new Vector3(0f,0f,0f);
-                // textRT.localPosition = new Vector3(0f,0f,0f);
-
-                // TextMeshPro textT = textGO.GetComponent<TextMeshPro>();
-                // textT.text = f.Name;
-                // textT.fontSize = 24;
-                // textT.color = Color.black;
-                // textT.alpha = 1f;
-
-            }
-        }
-
-        GridLayoutGroup glg = SavedFilesScrollViewContent.GetComponent<GridLayoutGroup>();
-        int paddingHeight = glg.padding.top + glg.padding.bottom;
-        int paddingWidth = glg.padding.left + glg.padding.right;
-        int cellHeight = (int)Math.Ceiling(glg.cellSize.y);
-        int fontSize = (int)Math.Ceiling(buttonPrefub.transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontSize);
-        int cellWidth = maxCharacterCount*(fontSize/5*3);
-        glg.cellSize = new Vector2(cellWidth, cellHeight);
-        SavedFilesScrollViewContent.GetComponent<RectTransform>().sizeDelta =
-                new Vector2 (cellWidth, (paddingHeight+SavedFilesScrollViewContent.transform.childCount * cellHeight + cellHeight/2));
-
-        
-
-                //new Vector2 (1000, (padding+SavedFilesScrollViewContent.transform.childCount * cellHeight + cellHeight/2));
-
-        // for (int i = 0; i < SavedFilesScrollViewContent.transform.childCount; i++)
-        // {
-        //     SavedFilesScrollViewContent.transform.GetChild(i)
-        // }
+        InitializeListOfSaves();
     }
 
     public void SetReturnSceneName(string sceneName)
@@ -300,4 +193,49 @@ public class Menu : MonoBehaviour
         }
     }
 
+    private void InitializeListOfSaves()
+    {
+        if (SavedFilesScrollViewContent != null)
+        {
+            string path = Application.persistentDataPath;
+            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(path);
+            System.IO.FileInfo[] info = dir.GetFiles("*.save");
+            int maxCharacterCount = 0;
+
+            foreach (System.IO.FileInfo f in info)
+            {
+                if (maxCharacterCount < f.Name.Length)
+                {
+                    maxCharacterCount = f.Name.Length;
+                }
+
+                GameObject buttonGO = Instantiate(buttonPrefub, transform.position, Quaternion.identity);
+                buttonGO.name = "Button";
+                buttonGO.transform.parent = SavedFilesScrollViewContent;
+
+                RectTransform buttonRT = buttonGO.GetComponent<RectTransform>();
+                buttonRT.anchoredPosition = new Vector2(0.5f, 0.5f);
+                buttonRT.anchorMin = new Vector2(0f, 1f);
+                buttonRT.anchorMax = new Vector2(1f, 1f);
+
+                Debug.Log(buttonGO.transform.childCount);
+                Transform tr = buttonGO.transform.GetChild(0);
+                TextMeshProUGUI tx = tr.GetComponent<TextMeshProUGUI>();
+                tx.text = f.Name;
+            }
+
+            GridLayoutGroup glg = SavedFilesScrollViewContent.GetComponent<GridLayoutGroup>();
+            int paddingHeight = glg.padding.top + glg.padding.bottom;
+            int paddingWidth = glg.padding.left + glg.padding.right;
+            int cellHeight = (int)Math.Ceiling(glg.cellSize.y);
+            int fontSize = (int)Math.Ceiling(buttonPrefub.transform.GetChild(0).GetComponent<TextMeshProUGUI>().fontSize);
+            int cellWidth = maxCharacterCount * (fontSize / 5 * 3);
+            glg.cellSize = new Vector2(cellWidth, cellHeight);
+            int widthSV = (int)Math.Ceiling(SavedFilesScrollViewContent.parent.parent.GetComponent<RectTransform>().sizeDelta.x);
+            RectTransform rt = SavedFilesScrollViewContent.GetComponent<RectTransform>();
+            Debug.Log($"paddingWidth={paddingWidth}");
+            rt.sizeDelta =
+                new Vector2(cellWidth - widthSV + paddingWidth * 5, (paddingHeight + SavedFilesScrollViewContent.transform.childCount * cellHeight + cellHeight / 2));
+        }
+    }
 }
