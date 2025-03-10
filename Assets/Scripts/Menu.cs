@@ -88,13 +88,10 @@ public class Menu : MonoBehaviour
         }
     }
 
-    
-
     private void LoadGame(string saveFileName)
     {
         Debug.Log("LoadGame");
 
-        saveFileName += ".save";
         Dictionary<string, object> gamestate = null;
         System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter =
             new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
@@ -172,7 +169,7 @@ public class Menu : MonoBehaviour
 
     private void DeleteGame(string saveFileName)
     {
-        saveFileName += ".save";
+        Debug.Log($"Delete {saveFileName}");
         string filename = System.IO.Path.Combine(Application.persistentDataPath, saveFileName);
         System.IO.File.Delete(filename);
     }
@@ -193,10 +190,41 @@ public class Menu : MonoBehaviour
         }
     }
 
+    private void ClearChildren(Transform savedFilesScrollViewContent)
+    {
+        //savedFilesScrollViewContent.DetachChildren();
+
+        Debug.Log($"savedFilesScrollViewContent.childCount = {savedFilesScrollViewContent.childCount}");
+        int i = 0;
+
+        //Array to hold all child obj
+        GameObject[] allChildren = new GameObject[savedFilesScrollViewContent.childCount];
+
+        //Find all child obj and store to that array
+        foreach (Transform child in savedFilesScrollViewContent)
+        {
+            allChildren[i] = child.gameObject;
+            i += 1;
+        }
+
+        //Now destroy them
+        foreach (GameObject child in allChildren)
+        {
+            Debug.Log($"InitializeListOfSaves Destroy");
+            DestroyImmediate(child.gameObject);
+        }
+
+        Debug.Log($"childCount = {savedFilesScrollViewContent.childCount}");
+    }
+
     private void InitializeListOfSaves()
     {
+        Debug.Log($"InitializeListOfSaves");
+
         if (SavedFilesScrollViewContent != null)
         {
+            ClearChildren(SavedFilesScrollViewContent);
+
             string path = Application.persistentDataPath;
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(path);
             System.IO.FileInfo[] info = dir.GetFiles("*.save");
@@ -213,12 +241,16 @@ public class Menu : MonoBehaviour
                 buttonGO.name = "Button";
                 buttonGO.transform.parent = SavedFilesScrollViewContent;
 
+                Button b = buttonGO.GetComponent<Button>();
+                b.onClick.AddListener(delegate {_saveFileName = f.Name;});
+
                 RectTransform buttonRT = buttonGO.GetComponent<RectTransform>();
                 buttonRT.anchoredPosition = new Vector2(0.5f, 0.5f);
                 buttonRT.anchorMin = new Vector2(0f, 1f);
                 buttonRT.anchorMax = new Vector2(1f, 1f);
+                buttonRT.pivot = new Vector2(0f, 0f);
+                buttonRT.localScale = new Vector3(1f, 1f, 1f);
 
-                Debug.Log(buttonGO.transform.childCount);
                 Transform tr = buttonGO.transform.GetChild(0);
                 TextMeshProUGUI tx = tr.GetComponent<TextMeshProUGUI>();
                 tx.text = f.Name;
@@ -236,5 +268,28 @@ public class Menu : MonoBehaviour
             rt.sizeDelta =
                 new Vector2(cellWidth - widthSV + paddingWidth * 5, (paddingHeight + SavedFilesScrollViewContent.transform.childCount * cellHeight + cellHeight / 2));
         }
+    }
+
+    public void OnClickLoad()
+    {
+        if(string.IsNullOrWhiteSpace(_saveFileName))
+        {
+            Debug.Log("_saveFileName is null or white space");
+            return;
+        }
+
+        LoadGame(_saveFileName);
+    }
+
+    public void OnClickDelete()
+    {
+        if(string.IsNullOrWhiteSpace(_saveFileName))
+        {
+            Debug.Log("_saveFileName is null or white space");
+            return;
+        }
+
+        DeleteGame(_saveFileName);
+        InitializeListOfSaves();
     }
 }
