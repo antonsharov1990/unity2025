@@ -43,17 +43,18 @@ public class Forest : MonoBehaviour
             UnityEngine.Debug.Log($"Start loading {scene} {x} {y} {z} {pitch} {roll} {yaw}");
 
             Vector3 position = new Vector3(x, y, z);
-            Quaternion rotation = new Quaternion(pitch, roll, yaw, 0);
+            Vector3 eulerAngles = new Vector3(pitch, roll, yaw);
             //GameObject new_pl = Instantiate(player, position, rotation) as GameObject;
             //player = new_pl;
             player.GetComponent<Transform>().position = position;
+            player.GetComponent<Transform>().eulerAngles = eulerAngles;
 
             x = (int)player.GetComponent<Transform>().position.x;
             y = (int)player.GetComponent<Transform>().position.y;
             z = (int)player.GetComponent<Transform>().position.z;
-            pitch = (int)player.GetComponent<Transform>().rotation.x;
-            roll = (int)player.GetComponent<Transform>().rotation.x;
-            yaw = (int)player.GetComponent<Transform>().rotation.x;
+            pitch = (int)player.GetComponent<Transform>().eulerAngles.x;
+            roll = (int)player.GetComponent<Transform>().eulerAngles.x;
+            yaw = (int)player.GetComponent<Transform>().eulerAngles.x;
             UnityEngine.Debug.Log($"Loaded {scene} {x} {y} {z} {pitch} {roll} {yaw}");
         }
 
@@ -87,9 +88,9 @@ public class Forest : MonoBehaviour
                                                      (int)player_transform.position.x,
                                                      (int)player_transform.position.y,
                                                      (int)player_transform.position.z,
-                                                     (int)player_transform.rotation.x,
-                                                     (int)player_transform.rotation.y,
-                                                     (int)player_transform.rotation.z
+                                                     (int)player_transform.eulerAngles.x,
+                                                     (int)player_transform.eulerAngles.y,
+                                                     (int)player_transform.eulerAngles.z
                                                     );
         }
     }
@@ -106,9 +107,9 @@ public class Forest : MonoBehaviour
         int x = (int)player.GetComponent<Transform>().position.x;
         int y = (int)player.GetComponent<Transform>().position.y;
         int z = (int)player.GetComponent<Transform>().position.z;
-        int pitch = (int)player.GetComponent<Transform>().rotation.x;
-        int roll = (int)player.GetComponent<Transform>().rotation.x;
-        int yaw = (int)player.GetComponent<Transform>().rotation.x;
+        int pitch = (int)player.GetComponent<Transform>().eulerAngles.x;
+        int roll = (int)player.GetComponent<Transform>().eulerAngles.y;
+        int yaw = (int)player.GetComponent<Transform>().eulerAngles.z;
         UnityEngine.Debug.Log($"OnState {scene} {x} {y} {z} {pitch} {roll} {yaw}");
 
         scene = Current.CharacterModel.GetScene();
