@@ -146,19 +146,20 @@ public class Menu : MonoBehaviour
             yaw = 0;
         }
 
-        Current.CharacterModel.SaveCharacterPlace(sceneName, (int)x, (int)y, (int)z, (int)pitch, (int)roll, (int)yaw);
+        Current.CharacterModel.SetCharacterPlace(sceneName, (int)x, (int)y, (int)z, (int)pitch, (int)roll, (int)yaw);
     }
 
     private void SaveGame(string saveFileName)
     {
         Dictionary<string, object> gamestate = new Dictionary<string, object>();
-        // gamestate.Add("scene", Current.CharacterModel.GetScene());
-        // gamestate.Add("x", Current.CharacterModel.GetX());
-        // gamestate.Add("y", Current.CharacterModel.GetY());
-        // gamestate.Add("z", Current.CharacterModel.GetZ());
-        // gamestate.Add("pitch", Current.CharacterModel.GetPitch());
-        // gamestate.Add("roll", Current.CharacterModel.GetRoll());
-        // gamestate.Add("yaw", Current.CharacterModel.GetYaw());
+        string scene = Current.CharacterModel.GetScene();
+        gamestate.Add("scene", scene);
+        gamestate.Add("x", Current.CharacterModel.GetX());
+        gamestate.Add("y", Current.CharacterModel.GetY());
+        gamestate.Add("z", Current.CharacterModel.GetZ());
+        gamestate.Add("pitch", Current.CharacterModel.GetPitch());
+        gamestate.Add("roll", Current.CharacterModel.GetRoll());
+        gamestate.Add("yaw", Current.CharacterModel.GetYaw());
 
         string path = System.IO.Path.Combine(Application.persistentDataPath, "save");
         if (!System.IO.Directory.Exists(path))

@@ -2,5 +2,5 @@ using UnityEngine;
 
 public static class Current
 {
-    public static CharacterModel CharacterModel;
+    public static CharacterModel CharacterModel = new CharacterModel();
 }
