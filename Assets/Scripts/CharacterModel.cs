@@ -28,50 +28,61 @@ public class CharacterModel
         _pitch = pitch;
         _roll = roll;
         _yaw = yaw;
-        UnityEngine.Debug.Log($"SetCharacterPlace {_sceneName} {_x} {_y} {_z} {_pitch} {_roll} {_yaw}");
-        UnityEngine.SceneManagement.SceneManager.LoadScene(_sceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
+        //UnityEngine.Debug.Log($"SetCharacterPlace {_sceneName} {_x} {_y} {_z} {_pitch} {_roll} {_yaw}");
+    }
+
+    public void LoadCharacterPlace(string sceneName, int x, int y, int z, int pitch, int roll, int yaw)
+    {
+        _sceneName = sceneName;
+        _x = x;
+        _y = y;
+        _z = z;
+        _pitch = pitch;
+        _roll = roll;
+        _yaw = yaw;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
     public string GetScene()
     {
-        _sceneName = "Forest";
+        //_sceneName = "Forest";
         return _sceneName;
     }
 
     public int GetX()
     {
-        _x = 140;
+        //_x = 140;
         return _x;
     }
 
     public int GetY()
     {
-        _y = 30;
+        //_y = 30;
         return _y;
     }
 
     public int GetZ()
     {
         //_z = 100;
-        _z = 500;
+        //_z = 500;
         return _z;
     }
 
     public int GetPitch()
     {
-        _pitch = 1;
+        //_pitch = 1;
         return _pitch;
     }
 
     public int GetRoll()
     {
-        _roll = 2;
+        //_roll = 2;
         return _roll;
     }
 
     public int GetYaw()
     {
-        _yaw = 3;
+        //_yaw = 3;
         return _yaw;
     }
 }

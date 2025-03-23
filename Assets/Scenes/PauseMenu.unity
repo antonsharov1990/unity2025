@@ -1252,7 +1252,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1948560134}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: OnMouseClickSaveGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1828,6 +1828,7 @@ MonoBehaviour:
   VolumeSlider: {fileID: 0}
   musicPlayer: {fileID: 0}
   SavedFilesScrollViewContent: {fileID: 0}
+  SaveNameInputField: {fileID: 0}
   buttonPrefub: {fileID: 0}
 --- !u!114 &1948560135
 MonoBehaviour:

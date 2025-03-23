@@ -48,6 +48,12 @@ public class Menu : MonoBehaviour
         SceneManager.LoadScene("LoadMenu", LoadSceneMode.Single);
     }
 
+    public void OnMouseClickSaveGame()
+    {
+        Debug.Log("OnMouseClickLoadGame");
+        SceneManager.LoadScene("SaveMenu", LoadSceneMode.Single);
+    }
+
     public void OnMouseClickSettings()
     {
         Debug.Log("OnMouseClickSettings");
@@ -146,20 +152,28 @@ public class Menu : MonoBehaviour
             yaw = 0;
         }
 
-        Current.CharacterModel.SetCharacterPlace(sceneName, (int)x, (int)y, (int)z, (int)pitch, (int)roll, (int)yaw);
+        UnityEngine.Debug.Log($"LoadGame {sceneName} {x} {y} {z} {pitch} {roll} {yaw}");
+        Current.CharacterModel.LoadCharacterPlace(sceneName, (int)x, (int)y, (int)z, (int)pitch, (int)roll, (int)yaw);
     }
 
     private void SaveGame(string saveFileName)
     {
         Dictionary<string, object> gamestate = new Dictionary<string, object>();
         string scene = Current.CharacterModel.GetScene();
+        int x = Current.CharacterModel.GetX();
+        int y = Current.CharacterModel.GetY();
+        int z = Current.CharacterModel.GetZ();
+        int pitch = Current.CharacterModel.GetPitch();
+        int roll = Current.CharacterModel.GetRoll();
+        int yaw = Current.CharacterModel.GetYaw();
+
         gamestate.Add("scene", scene);
-        gamestate.Add("x", Current.CharacterModel.GetX());
-        gamestate.Add("y", Current.CharacterModel.GetY());
-        gamestate.Add("z", Current.CharacterModel.GetZ());
-        gamestate.Add("pitch", Current.CharacterModel.GetPitch());
-        gamestate.Add("roll", Current.CharacterModel.GetRoll());
-        gamestate.Add("yaw", Current.CharacterModel.GetYaw());
+        gamestate.Add("x", x);
+        gamestate.Add("y", y);
+        gamestate.Add("z", z);
+        gamestate.Add("pitch", pitch);
+        gamestate.Add("roll", roll);
+        gamestate.Add("yaw", yaw);
 
         string path = System.IO.Path.Combine(Application.persistentDataPath, "save");
         if (!System.IO.Directory.Exists(path))
@@ -173,6 +187,7 @@ public class Menu : MonoBehaviour
         System.IO.FileStream stream = System.IO.File.Create(fileWithPath);
         formatter.Serialize(stream, gamestate);
         stream.Close();
+        UnityEngine.Debug.Log($"SaveGame {scene} {x} {y} {z} {pitch} {roll} {yaw}");
     }
 
     private void DeleteGame(string saveFileName)
