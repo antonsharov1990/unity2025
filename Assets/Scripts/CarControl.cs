@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class CartControl : MonoBehaviour
+[RequireComponent(typeof(CharacterController))]
+public class CarControl : MonoBehaviour
 {
     [SerializeField, Range(0, 1)]
     private float speed = 0.5f;
